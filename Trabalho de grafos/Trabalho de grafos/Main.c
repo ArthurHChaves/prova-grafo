@@ -31,17 +31,20 @@ int main() {
 	GRAFO* grafo;
 
 	char** herois; // matriz de herois
-	int* Sociabilidade; // vetor da sociabilidade dos herois
-	int numherois, i, j, media_Socie; //numero max de herois, i/j, int para a media da sociabilidade dos herois
+	int* força, *inteligencia, *agi, *vigor, *media; // vetores dos atributos dos herois
+	int numherois, i, j, media_Total; //numero max de herois, i/j, int para a media da sociabilidade dos herois
 
 	printf("Quantos herois serao cadastrados?\n"); 
 	scanf("%d", &numherois); // informa quantos herois serão cadastrados
 	
 	// aloca dinamicamente os herois
-	grafo = criaGrafo(numherois);
-
+	grafo = criaGrafo(numherois)
 	herois = (char**)malloc(numherois * sizeof(char*));
-	Sociabilidade = (int*)malloc(numherois * sizeof(int));
+	media = (int*)malloc(numherois * sizeof(int));
+	vigor = (int*)malloc(numherois * sizeof(int));
+	agi = (int*)malloc(numherois * sizeof(int));
+	inteligencia = (int*)malloc(numherois * sizeof(int));
+	força = (int*)malloc(numherois * sizeof(int));
 	
 	//cadastra os herois
 	for (i = 0; i < numherois; i++) {
@@ -50,23 +53,30 @@ int main() {
 		getchar();
 		fgets(herois[i], Tamho_string, stdin); // pega o nome do heroi
 		
-		printf("Sociabilidade do  heroi(0 até 10): ");
-		scanf("%d", &Sociabilidade[i]); // pega a sociabilidade do heroi
+		printf("força, inteligencia, agilidade, vigor do  heroi respectivamente (0 até 9):\n");
+		scanf("%d %d %d %d", &força[i], &inteligencia[i], &agi[i], &vigor[i]); // cadastra os atrib dos herois
+		media[i] = força[i] + inteligencia[i] + agi[i] + vigor[i]; // cria uma media para o heroi 'i'
 		
 	}
 	
 	// for para percorrer os vetores
 	for (i = 0; i < numherois; i++) {
 		for (j = 0; j < numherois; j++) {
-			media_Socie = (Sociabilidade[i] + Sociabilidade[j]) / 2; // faz a media da sociabilidade do heroi 'i' com todos os outros
-			if (media_Socie > 5) {
-				criaAresta(grafo, i, j); // cria uma adj para caso a sociabilidade entre os herois 'i' e 'j' seja maior que 5
+			media_Total = (media[i] + media[j]) / 2;
+			if (media_Total >= 25) {
+				criaAresta(grafo, i, j); // cria uma adj para caso a sociabilidade entre os herois 'i' e 'j' seja maior que 25
 			}
 		}
 	}
 
-	imprime_grafo_com_nome(grafo, herois); // chama a funçaimprime o grafo
+	imprime_grafo_com_nome(grafo, herois); // chama a funçao imprime o grafo
 
+	for (i = 0; i < grafo->arestas; i++) { // libera as arestas do grafo
+		for (j = 0; j < grafo->arestas; j++) {
+			remove_aresta(grafo, i, j);
+		}
+	}
 
+	free(grafo); // libera o grafo
 	return SUCESS;
 }
