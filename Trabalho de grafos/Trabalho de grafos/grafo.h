@@ -18,4 +18,4 @@ GRAFO* criaGrafo(int vert);
 ADJ* criaAdj(int vert);
 int criaAresta(GRAFO* gr, int vert, int vert_ligado);
 void imprime_grafo(GRAFO* gr);
-void libera_grafo_l(GRAFO* g);
+void remove_aresta(GRAFO* g, int v1, int v2);
