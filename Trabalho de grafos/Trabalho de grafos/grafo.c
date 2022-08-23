@@ -35,13 +35,13 @@ int criaAresta(GRAFO* gr, int vert, int vert_ligado) {
 	if ((vert_ligado < 0) || (vert_ligado >= gr->vertices)) { //valida se o  vertice ao  qual vai se ligar existe
 		return(false);
 	}
-	if ((vert < 0) || (vert_ligado >= gr->vertices)) { //ou se é maior que o numero de arestas
+	if ((vert < 0) || (vert_ligado >= gr->vertices)) { //ou se Ã© maior que o numero de arestas
 		return(false);
 	}
 
 	ADJ* novo = criaAdj(vert_ligado); //cria uma nova adjacencia no ultimo vertice ao qual se ligou
 
-	novo->prox = gr->adj[vert].cab; //a nova adjacencia vai receber a cabeça(posição inicial, ou vertice) da lista 
+	novo->prox = gr->adj[vert].cab; //a nova adjacencia vai receber a cabeÃ§a(posiÃ§Ã£o inicial, ou vertice) da lista 
 	gr->adj[vert].cab = novo;
 	gr->arestas++;
 	return (true);
@@ -64,16 +64,14 @@ void imprime_grafo(GRAFO* gr) {
 	}
 }
 
-void libera_grafo_l(GRAFO* g) {
-	int i;
-
-	for (i = 0; i < g->vertices; i++) {
-		ADJ* adj = g->adj[i].cab;
-		while (adj) {
-			free(adj);
-			adj = adj->prox;
-
-		}
-		free(g);
+void remove_aresta(GRAFO* g, int v1, int v2) {
+	ADJ* ap_l = &g->adj[v1];
+	while (ap_l != NULL &&
+		(ap_l)->vertice < v2)
+		ap_l = &(ap_l)->prox;
+	if (ap_l != NULL && (ap_l)->vertice == v2) {
+		ADJ* r = ap_l;
+		ap_l = (ap_l)->prox;
+		free(r);
 	}
 }
