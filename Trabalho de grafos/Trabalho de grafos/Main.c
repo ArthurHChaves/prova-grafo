@@ -60,11 +60,11 @@ int main() {
 	}
 	
 	// for para percorrer os vetores
+	
 	for (i = 0; i < numherois; i++) {
 		for (j = 0; j < numherois; j++) {
-			media_Total = (media[i] + media[j]) / 2;
-			if (media_Total >= 25) {
-				criaAresta(grafo, i, j); // cria uma adj para caso a sociabilidade entre os herois 'i' e 'j' seja maior que 25
+			if ((((media[i] - media[j]) <= 5) || ((media[j] - media[i]) <= 5)) && (j != i)) {
+				criaAresta(grafo, i, j);
 			}
 		}
 	}
